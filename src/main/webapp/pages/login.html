@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tkalenko simple login page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script>
+				function login() {
+					var u = document.getElementById("username").value;
+					var p = document.getElementById("password").value;
+					var jsonData = {
+						"parameters": {
+							"username": u,
+							"password": p
+						}
+					};
+					var xhr = new XMLHttpRequest();
+					xhr.open("POST", "http://localhost:8080/work.test-0.0.1/rest/login", false);
+					xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+					xhr.send(JSON.stringify(jsonData));
+					var res = "";
+					if(xhr.status == 200) {
+						var resJson = JSON.parse(xhr.responseText);
+						res = "Добро пожаловать, " + resJson.result.name;
+					} else {
+						var resJson = JSON.parse(xhr.responseText);
+						res = resJson.result.error;
+					}
+					document.getElementById("result").innerHTML = res;
+				}
+			</script>
+</head>
+<body>
+<form id="login" action="">
+    <label for="username">Username: </label>
+    <input id="username" name="username" type="text"/>
+    <label for="password">Password: </label>
+    <input id="password" name="password" type="password"/>
+    <input type="button" value="Login" onclick="login()">
+</form>
+<span id="result"></span>
+</body>
+</html>
